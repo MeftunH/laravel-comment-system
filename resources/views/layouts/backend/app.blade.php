@@ -50,7 +50,7 @@
             <ul class="nav navbar-nav">
                 <li class="active">
                     <a href="{{route('admin.dashboard')}}"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
-                    <a href=""> <i class="menu-icon fa fa-sign-out"></i>Logout </a>
+                    <a href="{{ url('/logout') }}"> <i class="menu-icon fa fa-sign-out"></i>Logout </a>
                 </li>
                 <h3 class="menu-title">Contents</h3><!-- /.menu-title -->
                 <li class="active">
