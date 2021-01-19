@@ -41,4 +41,8 @@ class User extends Authenticatable
         //One to many
       return  $this->belongsTo('App\Role');
     }
+    public function posts()
+    {
+        return $this->hasMany('App\Post');
+    }
 }
