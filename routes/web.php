@@ -28,6 +28,11 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
+//**********Post*********
+Route::get('post/create', 'PostController@create')->name('post.create');
+Route::post('post/store', 'PostController@store')->name('post.store');
+
 //*******For Admin *****************
 Route::group(['prefix'=>'admin','as'=>'admin.','namespace'=>'Admin','middleware'=>['auth','admin']],function (){
 Route::get('dashboard','DashboardController@index')->name('dashboard');
