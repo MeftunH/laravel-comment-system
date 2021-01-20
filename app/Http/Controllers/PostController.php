@@ -3,8 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use App\User;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use Intervention\Image\Facades\Image;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -29,33 +32,33 @@ class PostController extends Controller
     ]);
     //image upload
 
-        $slug=Str::slug($request->title,'-');
+        $slug = Str::slug($request->title, '-');
         $image = $request->image;
-        if ($request->image !=null) {
-            $imageName = $slug . '-' . uniqid() . Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
+        $imageName = $slug . '-' . uniqid() . Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
 
-        //if image exist
-        if (!Storage::disk('public')->exists('post'))
-        {
+        if (!Storage::disk('public')->exists('post')) {
             Storage::disk('public')->makeDirectory('post');
         }
-        $img = Image::make($image)->resize(200,null,function ($constraint)
-        {
+        // Image Croped
+        $img = Image::make($image)->resize(752, null, function ($constraint) {
             $constraint->aspectRatio();
             $constraint->upsize();
         })->stream();
-        Storage::disk('public')->put('post/'.$imageName,$img);
-    }
+        Storage::disk('public')->put('post/' . $imageName, $img);
+
         $post=new Post();
         $post->title=$request->title;
         $post->user_id=Auth::id();
         $post->slug=$slug;
-        if ($request->image !=null) {
-            $post->image = $imageName;
-        }
+        $post->image = $imageName;
         $post->body=$request->body;
         $post->save();
-        return redirect("/");
+        $username=DB::table('users')->select('users.name')->where('users.id',$post->user_id);
+        $users = User::all();
+        foreach($users as $user){
+            Mail::to($user->email)->queue(new NewPost($post));
+        }
+        return redirect()->route('home',compact('username'));
     }
 
     public function show()
