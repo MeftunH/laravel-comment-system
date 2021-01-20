@@ -112,6 +112,12 @@
                                                                         method="POST">
                                                                         @csrf
                                                                         <div class="col-lg-12">
+                                                                            @guest()
+                                                                                <textarea class="form-control mb-1"
+                                                                                          name="comment"
+                                                                                          placeholder="Login to comment"
+                                                                                          disabled></textarea>
+                                                                            @else
                                                                                 <textarea
                                                                                     id="reply-form-{{$comment->id}}-text"
                                                                                     cols="60"
@@ -123,6 +129,7 @@
                                                                                     onblur="this.placeholder = 'Reply'"
                                                                                     required=""
                                                                                 ></textarea>
+                                                                            @endguest
                                                                         </div>
                                                                         <button type="submit"
                                                                                 class="btn-reply text-uppercase ml-3">
