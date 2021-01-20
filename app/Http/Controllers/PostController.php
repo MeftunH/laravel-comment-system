@@ -31,33 +31,32 @@ class PostController extends Controller
         'body'=>'required',
     ]);
     //image upload
+if($request->image!=null) {
+    $slug = Str::slug($request->title, '-');
+    $image = $request->image;
+    $imageName = $slug . '-' . uniqid() . Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
 
-        $slug = Str::slug($request->title, '-');
-        $image = $request->image;
-        $imageName = $slug . '-' . uniqid() . Carbon::now()->timestamp . '.' . $image->getClientOriginalExtension();
-
-        if (!Storage::disk('public')->exists('post')) {
-            Storage::disk('public')->makeDirectory('post');
-        }
-        // Image Croped
-        $img = Image::make($image)->resize(752, null, function ($constraint) {
-            $constraint->aspectRatio();
-            $constraint->upsize();
-        })->stream();
-        Storage::disk('public')->put('post/' . $imageName, $img);
-
+    if (!Storage::disk('public')->exists('post')) {
+        Storage::disk('public')->makeDirectory('post');
+    }
+    // Image Croped
+    $img = Image::make($image)->resize(752, null, function ($constraint) {
+        $constraint->aspectRatio();
+        $constraint->upsize();
+    })->stream();
+    Storage::disk('public')->put('post/' . $imageName, $img);
+}
         $post=new Post();
         $post->title=$request->title;
         $post->user_id=Auth::id();
-        $post->slug=$slug;
-        $post->image = $imageName;
+        if($request->image!=null) {
+            $post->slug = $slug;
+            $post->image = $imageName;
+        }
         $post->body=$request->body;
         $post->save();
         $username=DB::table('users')->select('users.name')->where('users.id',$post->user_id);
         $users = User::all();
-        foreach($users as $user){
-            Mail::to($user->email)->queue(new NewPost($post));
-        }
         return redirect()->route('home',compact('username'));
     }
 

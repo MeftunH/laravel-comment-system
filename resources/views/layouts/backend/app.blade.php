@@ -49,13 +49,10 @@
         <div id="main-menu" class="main-menu collapse navbar-collapse">
             <ul class="nav navbar-nav">
                 <li class="active">
-                    <a href="{{route('admin.dashboard')}}"> <i class="menu-icon fa fa-dashboard"></i>Dashboard </a>
+                    <a href="{{route('admin.dashboard')}}"> <i class="menu-icon fa fa-dashboard"></i>Home </a>
                     <a href="{{ url('/logout') }}"> <i class="menu-icon fa fa-sign-out"></i>Logout </a>
                 </li>
-                <h3 class="menu-title">Contents</h3><!-- /.menu-title -->
-                <li class="active">
-                    <a href="{{url('admin/users')}}"> <i class="menu-icon fa fa-user"></i>Users </a>
-                </li>
+
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>
