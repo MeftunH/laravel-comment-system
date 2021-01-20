@@ -62,8 +62,10 @@
                             @if(Auth::user()->role->id == 1)
 
                               <li style="margin-left: 10px"> <a href="{{ route('post.create') }}" title="">Create Post</a></li>
+
                             <li style="margin-left: 10px"> <a href="{{ route('logout') }}" title="">Logout</a></li>
                             @elseif(Auth::user()->role->id == 2)
+
                                 <li>
                                     <a href="{{ route('post.create') }}">Create Post</a></li>
                             <li style="margin-left: 10px"> <a href="{{ route('logout') }}" title="">Logout</a></li>

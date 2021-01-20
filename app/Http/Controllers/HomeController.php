@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Post;
+use Cassandra\Session;
 use Illuminate\Http\Request;
 
 class HomeController extends Controller
@@ -24,4 +25,5 @@ class HomeController extends Controller
         $posts= Post::latest()->take(30)->get();
         return view('index',compact('posts'));
     }
+
 }
